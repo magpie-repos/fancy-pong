@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://dxke4jyo6xkhf"]
+
+[ext_resource type="Script" path="res://ball.gd" id="1_13ltd"]
+[ext_resource type="AudioStream" uid="uid://dnh4om0mw1nnn" path="res://SFX/paddle_bounce8kb.wav" id="2_silo3"]
+[ext_resource type="AudioStream" uid="uid://ctgem2gdqfue6" path="res://SFX/wall_bounce8kb.wav" id="3_qh21v"]
+
+[sub_resource type="Gradient" id="Gradient_dn44w"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dbtnn"]
+gradient = SubResource("Gradient_dn44w")
+width = 16
+height = 16
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t7p1b"]
+radius = 8.0
+
+[node name="Ball" type="RigidBody2D" groups=["ball"]]
+gravity_scale = 0.0
+script = ExtResource("1_13ltd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_dbtnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t7p1b")
+
+[node name="PaddleBounceSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_silo3")
+
+[node name="WallBounceSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_qh21v")
+
+[connection signal="point_scored" from="." to="." method="_on_point_scored"]

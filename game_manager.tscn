@@ -1,0 +1,239 @@
+[gd_scene load_steps=16 format=3 uid="uid://ucejfej0tft4"]
+
+[ext_resource type="Script" path="res://game_manager.gd" id="1_r1sew"]
+[ext_resource type="Script" path="res://ui.gd" id="2_6amui"]
+
+[sub_resource type="Gradient" id="Gradient_f7lxr"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6y02h"]
+gradient = SubResource("Gradient_f7lxr")
+
+[sub_resource type="Gradient" id="Gradient_3xm0e"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e1bkb"]
+gradient = SubResource("Gradient_3xm0e")
+
+[sub_resource type="Gradient" id="Gradient_qox28"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8k57a"]
+gradient = SubResource("Gradient_qox28")
+
+[sub_resource type="Gradient" id="Gradient_b52d4"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hge4g"]
+gradient = SubResource("Gradient_b52d4")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_de0pe"]
+distance = 11.0
+
+[sub_resource type="Gradient" id="Gradient_bvk2m"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jy1rx"]
+gradient = SubResource("Gradient_bvk2m")
+width = 16
+height = 128
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_81ms1"]
+size = Vector2(16, 128)
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3aavu"]
+shuffle = true
+loop = false
+stream_count = 4
+
+[node name="GameManager" type="Node"]
+script = ExtResource("1_r1sew")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(18, 10.125)
+texture = SubResource("GradientTexture2D_6y02h")
+centered = false
+
+[node name="WhiteLineTop" type="Sprite2D" parent="Background"]
+position = Vector2(32, 1)
+scale = Vector2(1, 0.00771605)
+texture = SubResource("GradientTexture2D_e1bkb")
+
+[node name="WhiteLineBottom" type="Sprite2D" parent="Background"]
+position = Vector2(32, 63)
+scale = Vector2(1, 0.00771605)
+texture = SubResource("GradientTexture2D_e1bkb")
+
+[node name="DividerLine" type="Sprite2D" parent="Background"]
+position = Vector2(32, 32)
+rotation = 1.5708
+scale = Vector2(0.97, 0.001)
+texture = SubResource("GradientTexture2D_e1bkb")
+
+[node name="MainUI" type="Control" parent="."]
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("2_6amui")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainUI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 63.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MainUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 1030
+
+[node name="LeftScore" type="Label" parent="MainUI/MarginContainer/HSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "##"
+
+[node name="RightScore" type="Label" parent="MainUI/MarginContainer/HSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "##"
+horizontal_alignment = 1
+
+[node name="ESCtoPause" type="Label" parent="MainUI"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 584.0
+offset_right = 184.0
+offset_bottom = 618.0
+theme_override_colors/font_color = Color(0.299547, 0.299547, 0.299547, 1)
+theme_override_font_sizes/font_size = 24
+text = "esc to pause"
+
+[node name="RtoReset" type="Label" parent="MainUI"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 560.0
+offset_right = 184.0
+offset_bottom = 594.0
+theme_override_colors/font_color = Color(0.299547, 0.299547, 0.299547, 1)
+theme_override_font_sizes/font_size = 24
+text = "r to reset"
+
+[node name="PauseUI" type="Control" parent="."]
+top_level = true
+z_index = 100
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="WhiteBorder" type="Sprite2D" parent="PauseUI"]
+position = Vector2(576, 330)
+scale = Vector2(2.885, 3.285)
+texture = SubResource("GradientTexture2D_8k57a")
+
+[node name="BlackFill" type="Sprite2D" parent="PauseUI/WhiteBorder"]
+scale = Vector2(0.98, 0.98)
+texture = SubResource("GradientTexture2D_hge4g")
+
+[node name="CenterContainer" type="CenterContainer" parent="PauseUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -20.0
+offset_right = 31.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VSplitContainer" type="VSplitContainer" parent="PauseUI/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="PauseUI/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="PausedTitle" type="Label" parent="PauseUI/CenterContainer/VSplitContainer/CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PAUSED"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseUI/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="LeftAIToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "Left AI"
+
+[node name="RightAIToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "Left AI"
+
+[node name="SFXToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "SFX"
+
+[node name="esc to reume" type="Label" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "pres 'esc' to resume"
+
+[node name="WorldBorder" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="WorldBorder"]
+
+[node name="WorldBorderTop" type="CollisionShape2D" parent="WorldBorder/StaticBody2D"]
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_de0pe")
+
+[node name="WorldBorderBottom" type="CollisionShape2D" parent="WorldBorder/StaticBody2D"]
+position = Vector2(0, 648)
+shape = SubResource("WorldBoundaryShape2D_de0pe")
+
+[node name="LeftPaddle" type="Sprite2D" parent="." groups=["paddle"]]
+position = Vector2(100, 324)
+texture = SubResource("GradientTexture2D_jy1rx")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="LeftPaddle"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftPaddle/StaticBody2D"]
+shape = SubResource("RectangleShape2D_81ms1")
+
+[node name="RightPaddle" type="Sprite2D" parent="." groups=["paddle"]]
+position = Vector2(1052, 324)
+texture = SubResource("GradientTexture2D_jy1rx")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="RightPaddle"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightPaddle/StaticBody2D"]
+shape = SubResource("RectangleShape2D_81ms1")
+
+[node name="PauseTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamPlaylist_3aavu")
+
+[connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/LeftAIToggle" to="." method="_on_left_ai_toggle"]
+[connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/RightAIToggle" to="." method="_on_right_ai_toggled"]
+[connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/SFXToggle" to="." method="_on_sfx_toggle"]
+[connection signal="timeout" from="PauseTimer" to="." method="_on_pause_timer_timeout"]
