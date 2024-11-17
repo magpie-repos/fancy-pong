@@ -59,10 +59,10 @@ func _on_point_scored(side: String, old_ball_ref: Ball) -> void:
 	spawn_ball()
 
 func pause_game() -> void:
-	##Set pause flags and chagne speed multiplier
+	##Set pause flags and change speed multiplier
 	repause_timer = false
 	global_speed = 0
-	##Reapply old saved ball speed from before pause
+	##Save current ball ball speed for later; Freeze ball
 	ball = get_tree().get_first_node_in_group("ball")
 	ball_speed = ball.ball_speed
 	ball.ball_speed = 0
@@ -73,7 +73,7 @@ func unpause_game() -> void:
 	##Set pause flags and change speed multiplier
 	repause_timer = false
 	global_speed = 1
-	##Save current ball ball speed for later; Freeze ball
+	##Reapply old saved ball speed from before pause
 	ball = get_tree().get_first_node_in_group("ball")
 	ball.ball_speed = ball_speed
 	##Hide Pause UI
