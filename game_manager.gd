@@ -1,4 +1,5 @@
 extends Node
+class_name GameManager
 
 ##Misc vars
 @export var paddle_speed: float = 200
@@ -11,7 +12,10 @@ extends Node
 @onready var l_paddle: Sprite2D = $LeftPaddle
 @onready var ui: Control = $MainUI
 @onready var pause_ui: Control = $PauseUI
+@onready var points_sfx: AudioStreamPlayer = $PointScoredSFX
 
+#AI Vars
+var ai_margin: float = 5
 
 ##Score vars
 @export var right_score: int = 0
@@ -23,7 +27,8 @@ var repause_timer: bool = true
 
 ##Game Settings
 var left_ai: bool = false
-var right_ai: bool = false
+var right_ai: bool = true
+var perfect_ai: bool = false
 var sfx_enable: bool = true
 
 var ball_scene: PackedScene = preload("res://ball.tscn")
@@ -43,7 +48,6 @@ func spawn_ball() -> void:
 	##Connect score signal
 	ball.point_scored.connect(_on_point_scored)
 
-
 func _on_point_scored(side: String, old_ball_ref: Ball) -> void:
 	##Determine which side scored the point and update the score var
 	if side == "r":
@@ -57,6 +61,13 @@ func _on_point_scored(side: String, old_ball_ref: Ball) -> void:
 	old_ball_ref.point_scored.disconnect(_on_point_scored)
 	old_ball_ref.queue_free()
 	spawn_ball()
+	
+	##Play sound
+	if sfx_enable:
+		points_sfx.play()
+	
+
+	
 
 func pause_game() -> void:
 	##Set pause flags and chagne speed multiplier
@@ -90,6 +101,19 @@ func reset_game() -> void:
 	get_tree().get_first_node_in_group("ball").queue_free()
 	spawn_ball()
 
+func ai_movement(ball_pos: Vector2, side: String) -> Vector2:
+	var paddle: Sprite2D
+	if side == "r":
+		paddle = r_paddle
+	if side == "l":
+		paddle = l_paddle
+	
+	if paddle.position.y < ball_pos.y + ai_margin:
+		return Vector2.DOWN
+	elif paddle.position.y > ball_pos.y - ai_margin:
+		return Vector2.UP
+	else:
+		return Vector2.ZERO
 
 func _process(delta: float) -> void:
 	
@@ -105,8 +129,22 @@ func _process(delta: float) -> void:
 	
 	
 	##Handle Paddle movement & input
-	var l_paddle_movement: Vector2 = Input.get_vector("void", "void", "l_pad_up", "l_pad_down")
-	var r_paddle_movement: Vector2 = Input.get_vector("void", "void", "r_pad_up", "r_pad_down")
+	var l_paddle_movement: Vector2
+	var r_paddle_movement: Vector2
+	if not left_ai:
+		l_paddle_movement = Input.get_vector("void", "void", "l_pad_up", "l_pad_down")
+	else:
+		l_paddle_movement = ai_movement(ball.position, "l")
+		if perfect_ai:
+			l_paddle_movement = Vector2.ZERO
+			l_paddle.position.y = ball.position.y
+	if not right_ai:
+		r_paddle_movement = Input.get_vector("void", "void", "r_pad_up", "r_pad_down")
+	else:
+		r_paddle_movement = ai_movement(ball.position, "r")
+		if perfect_ai:
+			r_paddle_movement = Vector2.ZERO
+			r_paddle.position.y = ball.position.y
 	
 	##Update paddle positions
 	l_paddle.position += l_paddle_movement * paddle_speed * delta * global_speed
@@ -141,3 +179,6 @@ func _on_sfx_toggle(toggled_on: bool) -> void:
 	sfx_enable = toggled_on
 	ball = get_tree().get_first_node_in_group("ball")
 	ball.ball_sfx = sfx_enable
+
+func _on_perfect_ai_toggle(toggled_on: bool) -> void:
+	perfect_ai = toggled_on

@@ -4,7 +4,4 @@
 Made as part of the 20 games challenge (https://20_games_challenge.gitlab.io/)
 
 # TODO:
- - Point Scored SFX
- - Flashy thingy on score (light screen shake?)
- - Finish implementing AI
  - Setup & Build

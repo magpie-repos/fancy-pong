@@ -10,10 +10,13 @@ config_version=5
 
 [application]
 
-config/name="Pong"
+config/name="Fancy Pong"
+config/description="Y'know. Pong, but fancier."
+config/version="1.0"
 run/main_scene="res://game_manager.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+config/icon="res://Images/icon.PNG"
 
 [display]
 

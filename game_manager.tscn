@@ -1,7 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://ucejfej0tft4"]
+[gd_scene load_steps=20 format=3 uid="uid://ucejfej0tft4"]
 
 [ext_resource type="Script" path="res://game_manager.gd" id="1_r1sew"]
 [ext_resource type="Script" path="res://ui.gd" id="2_6amui"]
+[ext_resource type="AudioStream" uid="uid://cj06reifg7ot8" path="res://SFX/point1_8kb.wav" id="3_bc4tu"]
+[ext_resource type="AudioStream" uid="uid://dqmrrqsduotem" path="res://SFX/point2_8kb.wav" id="4_iocyk"]
+[ext_resource type="AudioStream" uid="uid://bp46rcbniv4o8" path="res://SFX/point3_8kb.wav" id="5_sq12n"]
+[ext_resource type="AudioStream" uid="uid://c2j5ld6i8332x" path="res://SFX/point4_8kb.wav" id="6_ncnxd"]
 
 [sub_resource type="Gradient" id="Gradient_f7lxr"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
@@ -41,10 +45,13 @@ height = 128
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_81ms1"]
 size = Vector2(16, 128)
 
-[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3aavu"]
-shuffle = true
-loop = false
-stream_count = 4
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ge100"]
+playback_mode = 1
+streams_count = 4
+stream_0/stream = ExtResource("3_bc4tu")
+stream_1/stream = ExtResource("4_iocyk")
+stream_2/stream = ExtResource("5_sq12n")
+stream_3/stream = ExtResource("6_ncnxd")
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_r1sew")
@@ -143,7 +150,7 @@ size_flags_vertical = 4
 
 [node name="WhiteBorder" type="Sprite2D" parent="PauseUI"]
 position = Vector2(576, 330)
-scale = Vector2(2.885, 3.285)
+scale = Vector2(2.885, 3.545)
 texture = SubResource("GradientTexture2D_8k57a")
 
 [node name="BlackFill" type="Sprite2D" parent="PauseUI/WhiteBorder"]
@@ -185,10 +192,16 @@ text = "Left AI"
 
 [node name="RightAIToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
 layout_mode = 2
-text = "Left AI"
+button_pressed = true
+text = "Right AI"
+
+[node name="PerfectAIToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "Perfect AI"
 
 [node name="SFXToggle" type="CheckBox" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
 layout_mode = 2
+button_pressed = true
 text = "SFX"
 
 [node name="esc to reume" type="Label" parent="PauseUI/CenterContainer/VSplitContainer/VBoxContainer"]
@@ -230,10 +243,11 @@ wait_time = 0.05
 one_shot = true
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource("AudioStreamPlaylist_3aavu")
+[node name="PointScoredSFX" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_ge100")
 
 [connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/LeftAIToggle" to="." method="_on_left_ai_toggle"]
 [connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/RightAIToggle" to="." method="_on_right_ai_toggled"]
+[connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/PerfectAIToggle" to="." method="_on_perfect_ai_toggle"]
 [connection signal="toggled" from="PauseUI/CenterContainer/VSplitContainer/VBoxContainer/SFXToggle" to="." method="_on_sfx_toggle"]
 [connection signal="timeout" from="PauseTimer" to="." method="_on_pause_timer_timeout"]

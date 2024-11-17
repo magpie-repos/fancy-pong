@@ -16,9 +16,13 @@ func _ready() -> void:
 	add_to_group("ball")
 	
 	##Spawn the ball with a randomized vector
-	while abs(direction.x) < 0.4 && abs(direction.x) != 0.5: #Ensure there is some movement along x axis
-		while abs(direction.y) < 0.2: #Ensure there is movement along the y axis
-			direction = Vector2(randf_range( -1.0, 1.0), randf_range( -1.0, 1.0)).normalized()
+	direction = Vector2(randf_range( -1.0, 1.0), randf_range( -1.0, 1.0)).normalized()
+	if direction.x < 0:#Safeties to make sure the direction is fun and won't loop
+		direction.x = -1
+	else:
+		direction.x = 1
+	if abs(direction.y) < 0.2:
+		direction.y = 0.2
 
 func _physics_process(delta: float) -> void:
 	var velocity: Vector2 = direction * ball_speed * delta
@@ -28,11 +32,13 @@ func _physics_process(delta: float) -> void:
 		direction = (direction.bounce(collision.get_normal())).normalized()
 		if collision.get_collider().get_parent().is_in_group("paddle"):
 			ball_speed += 25
-			paddle_sfx.play()
+			if ball_sfx:
+				paddle_sfx.play()
 			paddle_sfx.pitch_scale += 0.05
 			wall_sfx.pitch_scale += 0.05
 		else:
-			wall_sfx.play()
+			if ball_sfx:
+				wall_sfx.play()
 		
 	position += direction * ball_speed * delta
 	
