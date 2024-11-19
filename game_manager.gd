@@ -65,6 +65,10 @@ func _on_point_scored(side: String, old_ball_ref: Ball) -> void:
 	##Play sound
 	if sfx_enable:
 		points_sfx.play()
+		
+	##Reset paddle position
+	r_paddle.position.y = window_size.y / 2
+	l_paddle.position.y = window_size.y / 2
 	
 
 	
@@ -97,6 +101,11 @@ func reset_game() -> void:
 	ui.update_r_score(right_score)
 	ui.update_l_score(left_score)
 	pause_ui.hide()
+	
+	##Reset paddle position
+	r_paddle.position.y = window_size.y / 2
+	l_paddle.position.y = window_size.y / 2
+	
 	##Delete ball and spawn new one
 	get_tree().get_first_node_in_group("ball").queue_free()
 	spawn_ball()

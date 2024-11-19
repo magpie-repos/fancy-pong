@@ -8,7 +8,7 @@ func _ready() -> void:
 	update_r_score(0)
 
 func update_l_score(new_score: int) -> void:
-	right_score_label.text = str(new_score)
+	left_score_label.text = str(new_score)
 
 func update_r_score(new_score: int) -> void:
-	left_score_label.text = str(new_score)
+	right_score_label.text = str(new_score)

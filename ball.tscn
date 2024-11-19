@@ -30,5 +30,6 @@ stream = ExtResource("2_silo3")
 
 [node name="WallBounceSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_qh21v")
+volume_db = -2.0
 
 [connection signal="point_scored" from="." to="." method="_on_point_scored"]
